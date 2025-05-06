@@ -1,0 +1,14 @@
+name: TryTpa
+version: 1.0
+api-version: 1.19
+main: net.trysmp.tpa.TryTpa
+author: VertrauterDavid
+website: https://vertrauterdavid.net/ & https://github.com/vertrauterdavid/
+
+commands:
+  tpa:
+  tpaccept:
+  tpaaccept:
+  tpahere:
+  tpahereaccept:
+  tpaall:

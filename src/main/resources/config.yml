@@ -1,0 +1,81 @@
+# ---------------------------------------------------------------------------
+#
+#         Developed by VertrauterDavid
+#
+#         https://vertrauterdavid.net/
+#         https://github.com/VertrauterDavid/
+#
+# ---------------------------------------------------------------------------
+
+Settings:
+
+  # Cooldown in milliseconds
+  Cooldown:
+    Tpa: 5000
+    TpaHere: 5000
+    TpaAll: 600000 # 10 minutes
+
+  # Expiration time in seconds
+  Expiration:
+    Tpa: 60
+    TpaHere: 60
+    TpaAll: 600000 # 10 minutes
+
+  # Sound on request received
+  Sounds:
+    Tpa: true
+    TpaHere: true
+    TpaAll: true
+
+Messages:
+  Prefix: "&8 | &#559effTrySmp &8» &7"
+  CommandSyntax: "%prefix%Syntax: &#559eff/%command%"
+  CommandDelay: "%prefix%You have to wait &#ff0000%time%"
+  PlayerNotFound: "%prefix%&#ff0000Player not found"
+  NotYourself: "%prefix%You cannot do this to yourself"
+  NoPermission: "%prefix%&#ff0000You do not have permission to do this"
+
+  Accepted: "%prefix%Request has been accepted"
+  AcceptedAll: "%prefix%All requests have been accepted"
+  AcceptedOther: "%prefix%%player% has accepted your request"
+
+  NoRequests: "%prefix%There are no requests to accept"
+  Expired: "%prefix%The request has already expired or does not exist"
+  Sent: "%prefix%&#7cfc00Request has been sent"
+
+  # 'Message' is the full message sent to the player, should contain the %click% placeholder
+  # 'Click' is the message with the click action
+  Request:
+    Tpa:
+      # for new lines use '\n'
+      Message: "\n&7     &#559eff%player% &7wants to teleport &nto you&r&7!\n     &7Click %click% &r&7to accept!\n"
+      Click: "&#559eff&lHERE"
+      # empty to disable
+      ClickHover: "&#559effClick to accept the teleport request"
+
+    TpaHere:
+      Message: "\n&7     &#559eff%player% &7wants you to teleport &nto him&r&7!\n     &7Click %click% &r&7to accept!\n"
+      Click: "&#559eff&lHERE"
+      ClickHover: "&#559effClick to accept the teleport request"
+
+    TpaAll:
+      Message: "\n&7     &#559eff%player% &7wants &neveryone &r&7to teleport &nto him&r&7!\n     &7Click %click% &r&7to accept!\n"
+      Click: "&#559eff&lHERE"
+      ClickHover: "&#559effClick to accept the teleport request"
+
+Teleport:
+  CoolDown: 5 # 0 = disabled
+  Message: "%prefix%You will be teleported in &#559eff%seconds% &7seconds!" # empty = disabled
+  Actionbar: "&7You will be teleported in &#559eff%seconds% &7seconds!" # empty = disabled
+  Title: # empty = disabled
+    Title: "&#559eff%seconds%" # 1st row
+    SubTitle: "" # 2nd row
+  CoolDownSound: "BLOCK_NOTE_BLOCK_PLING" # empty = disabled
+  TeleportSound: "ENTITY_PLAYER_LEVELUP" # empty = disabled
+  CancelOnMove: true
+  CancelTitle:
+    Title: "&#ff0000Teleportation canceled!"
+    SubTitle: "&7You moved!"
+  MaximumMoveDistance: 0.3
+  CancelMessage: "%prefix%Teleportation was canceled because you moved!"
+  CancelSound: "BLOCK_ANVIL_LAND" # empty = disabled
