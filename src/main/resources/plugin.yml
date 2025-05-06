@@ -6,6 +6,7 @@ author: VertrauterDavid
 website: https://vertrauterdavid.net/ & https://github.com/vertrauterdavid/
 
 commands:
+  removetpaall:
   tpa:
   tpaccept:
   tpaaccept:

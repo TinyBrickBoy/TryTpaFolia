@@ -17,12 +17,16 @@
 <details>
     <summary><h3 style="display: inline;">Permissions</h3></summary>
 
-| Permissions              |                                            |
-|--------------------------|:-------------------------------------------|
-| `trytpa.command.tpa`     | Permission for /tpa and /tpaaccept         |
-| `trytpa.command.tpahere` | Permission for /tpahere and /tpahereaccept |
-| `trytpa.command.tpaall`  | Permission to send /tpaall requests        |
-| `trytpa.bypass.teleport` | Bypass the teleport cooldown               |
-| `trytpa.bypass.cooldown` | Bypass the command cooldown                |
+| Permissions                   |                                            |
+|-------------------------------|:-------------------------------------------|
+| `trytpa.command.tpa`          | Permission for /tpa and /tpaaccept         |
+| `trytpa.command.tpahere`      | Permission for /tpahere and /tpahereaccept |
+| `trytpa.command.tpaall`       | Permission to send /tpaall requests        |
+| `trytpa.command.removetpaall` | Permission to use /removetpaall            |
+| `trytpa.bypass.teleport`      | Bypass the teleport cooldown               |
+| `trytpa.bypass.cooldown`      | Bypass the command cooldown                |
+
+> [!NOTE]  
+> /removetpaall requires luckperms to be installed on the server!
 
 </details>

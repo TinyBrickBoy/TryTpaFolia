@@ -43,6 +43,8 @@ Messages:
   Expired: "%prefix%The request has already expired or does not exist"
   Sent: "%prefix%&#7cfc00Request has been sent"
 
+  Removed: "%prefix%TpaAll permissions have been removed for &#ff0000%player%"
+
   # 'Message' is the full message sent to the player, should contain the %click% placeholder
   # 'Click' is the message with the click action
   Request:

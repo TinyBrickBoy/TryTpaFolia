@@ -18,6 +18,7 @@ public class TryTpa extends JavaPlugin {
         saveDefaultConfig();
         instance = this;
 
+        new RemoveTpaAllCommand();
         new TpaCommand();
         new TpaAcceptCommand();
         new TpaHereCommand();
