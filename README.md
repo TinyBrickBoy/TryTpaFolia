@@ -12,6 +12,9 @@
 2. Replace the old jar with the new one
 3. Delete the old `config.yml` and restart your server
 
+### Dependencies
+- [LuckPerms](https://luckperms.net/) - for /removetpaall
+
 <hr>
 
 <details>
@@ -25,8 +28,5 @@
 | `trytpa.command.removetpaall` | Permission to use /removetpaall            |
 | `trytpa.bypass.teleport`      | Bypass the teleport cooldown               |
 | `trytpa.bypass.cooldown`      | Bypass the command cooldown                |
-
-> [!NOTE]  
-> /removetpaall requires luckperms to be installed on the server!
 
 </details>
