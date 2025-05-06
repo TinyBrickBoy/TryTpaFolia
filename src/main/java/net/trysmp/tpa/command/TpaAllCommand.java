@@ -79,7 +79,8 @@ public class TpaAllCommand implements CommandExecutor, TabCompleter {
                 Bukkit.getScheduler().runTaskLater(TryTpa.getInstance(), () -> requests.remove(player.getUniqueId()), 20 * TryTpa.getInstance().getConfig().getLong("Settings.Expiration.TpaAll"));
             }
 
-            requests.put(player.getUniqueId(), player.getLocation());return false;
+            requests.put(player.getUniqueId(), player.getLocation());
+            return false;
         }
 
         player.sendMessage(MessageUtil.get("Messages.CommandSyntax").replaceAll("%command%", "tpaall"));
