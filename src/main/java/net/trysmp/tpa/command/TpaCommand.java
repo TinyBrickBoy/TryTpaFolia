@@ -75,7 +75,11 @@ public class TpaCommand implements CommandExecutor, TabCompleter {
 
             if (!(player.hasPermission("trytpa.bypass.cooldown"))) {
                 commandDelay.put(player.getUniqueId(), System.currentTimeMillis() + TryTpa.getInstance().getConfig().getLong("Settings.Cooldown.Tpa"));
-                Bukkit.getScheduler().runTaskLater(TryTpa.getInstance(), () -> requests.remove(player.getUniqueId()), 20 * TryTpa.getInstance().getConfig().getLong("Settings.Expiration.Tpa"));
+
+                // Folia: Verwende entity-basiertes Scheduling
+                player.getScheduler().runDelayed(TryTpa.getInstance(), (task) -> {
+                    requests.remove(player.getUniqueId());
+                }, null, 20 * TryTpa.getInstance().getConfig().getLong("Settings.Expiration.Tpa"));
             }
 
             requests.put(player.getUniqueId(), target.getUniqueId());
@@ -147,7 +151,7 @@ public class TpaCommand implements CommandExecutor, TabCompleter {
             player.sendMessage(MessageUtil.get("Messages.PlayerNotFound"));
             return;
         }
-        
+
         if (player == target) {
             player.sendMessage(MessageUtil.get("Messages.NotYourself"));
             return;
@@ -164,5 +168,4 @@ public class TpaCommand implements CommandExecutor, TabCompleter {
             player.sendMessage(MessageUtil.get("Messages.Expired"));
         }
     }
-
 }

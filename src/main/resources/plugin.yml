@@ -1,8 +1,9 @@
 name: TryTpa
-version: 1.1
-api-version: 1.19
+version: 1.2-folia
+folia-supported: true
+api-version: 1.20
 main: net.trysmp.tpa.TryTpa
-author: VertrauterDavid
+author: VertrauterDavid recodet by TinyBrickBoy for Folia support
 website: https://vertrauterdavid.net/ & https://github.com/vertrauterdavid/
 
 commands:

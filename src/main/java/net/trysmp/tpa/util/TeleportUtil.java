@@ -6,10 +6,10 @@ import org.bukkit.Bukkit;
 import org.bukkit.Location;
 import org.bukkit.Sound;
 import org.bukkit.entity.Player;
-import org.bukkit.scheduler.BukkitRunnable;
 
 import java.util.HashMap;
 import java.util.UUID;
+import java.util.concurrent.atomic.AtomicInteger;
 
 @UtilityClass
 public class TeleportUtil {
@@ -27,55 +27,61 @@ public class TeleportUtil {
 
         move.put(player.getUniqueId(), player.getLocation());
 
-        final int[] seconds = {6};
+        AtomicInteger seconds = new AtomicInteger(6);
         UUID uuid = player.getUniqueId();
-        new BukkitRunnable() {
-            @Override
-            public void run() {
-                seconds[0]--;
 
-                if (Bukkit.getPlayer(uuid) == null) {
-                    move.remove(player.getUniqueId());
-                    this.cancel();
+        // Folia: Verwende entity-basiertes wiederkehrendes Scheduling
+        player.getScheduler().runAtFixedRate(TryTpa.getInstance(), (task) -> {
+            seconds.decrementAndGet();
+
+            if (Bukkit.getPlayer(uuid) == null) {
+                move.remove(uuid);
+                task.cancel();
+                return;
+            }
+
+            Player currentPlayer = Bukkit.getPlayer(uuid);
+            if (currentPlayer == null) {
+                move.remove(uuid);
+                task.cancel();
+                return;
+            }
+
+            if (TryTpa.getInstance().getConfig().getBoolean("Teleport.CancelOnMove")) {
+                Location moveLocation = move.get(uuid);
+                if (moveLocation != null && moveLocation.distance(currentPlayer.getLocation()) > TryTpa.getInstance().getConfig().getDouble("Teleport.MaximumMoveDistance")) {
+                    currentPlayer.sendMessage(MessageUtil.get("Teleport.CancelMessage"));
+                    if (!(TryTpa.getInstance().getConfig().getString("Teleport.CancelTitle.Title").equalsIgnoreCase("")) || !(TryTpa.getInstance().getConfig().getString("Teleport.CancelTitle.SubTitle").equalsIgnoreCase(""))) {
+                        currentPlayer.sendTitle(MessageUtil.get("Teleport.CancelTitle.Title"), MessageUtil.get("Teleport.CancelTitle.SubTitle"));
+                    }
+                    playSound(currentPlayer, "Teleport.CancelSound");
+                    move.remove(uuid);
+                    task.cancel();
                     return;
                 }
+            }
 
-                if (TryTpa.getInstance().getConfig().getBoolean("Teleport.CancelOnMove")) {
-                    Location moveLocation = move.get(player.getUniqueId());
-                    if (moveLocation != null && moveLocation.distance(player.getLocation()) > TryTpa.getInstance().getConfig().getDouble("Teleport.MaximumMoveDistance")) {
-                        player.sendMessage(MessageUtil.get("Teleport.CancelMessage"));
-                        if (!(TryTpa.getInstance().getConfig().getString("Teleport.CancelTitle.Title").equalsIgnoreCase("")) || !(TryTpa.getInstance().getConfig().getString("Teleport.CancelTitle.SubTitle").equalsIgnoreCase(""))) {
-                            player.sendTitle(MessageUtil.get("Teleport.CancelTitle.Title"), MessageUtil.get("Teleport.CancelTitle.SubTitle"));
-                        }
-                        playSound(player, "Teleport.CancelSound");
-                        move.remove(player.getUniqueId());
-                        this.cancel();
-                        return;
+            switch (seconds.get()) {
+                case 5, 4, 3, 2, 1 -> {
+                    if (!(TryTpa.getInstance().getConfig().getString("Teleport.Message").equalsIgnoreCase(""))) {
+                        currentPlayer.sendMessage(MessageUtil.get("Teleport.Message").replaceAll("%seconds%", String.valueOf(seconds.get())));
                     }
+                    if (!(TryTpa.getInstance().getConfig().getString("Teleport.Actionbar").equalsIgnoreCase(""))) {
+                        currentPlayer.sendActionBar(MessageUtil.get("Teleport.Actionbar").replaceAll("%seconds%", String.valueOf(seconds.get())));
+                    }
+                    if (!(TryTpa.getInstance().getConfig().getString("Teleport.Title.Title").equalsIgnoreCase("")) || !(TryTpa.getInstance().getConfig().getString("Teleport.Title.SubTitle").equalsIgnoreCase(""))) {
+                        currentPlayer.sendTitle(MessageUtil.get("Teleport.Title.Title").replaceAll("%seconds%", String.valueOf(seconds.get())), MessageUtil.get("Teleport.Title.SubTitle").replaceAll("%seconds%", String.valueOf(seconds.get())));
+                    }
+                    playSound(currentPlayer, "Teleport.CoolDownSound");
                 }
-
-                switch (seconds[0]) {
-                    case 5, 4, 3, 2, 1 -> {
-                        if (!(TryTpa.getInstance().getConfig().getString("Teleport.Message").equalsIgnoreCase(""))) {
-                            player.sendMessage(MessageUtil.get("Teleport.Message").replaceAll("%seconds%", String.valueOf(seconds[0])));
-                        }
-                        if (!(TryTpa.getInstance().getConfig().getString("Teleport.Actionbar").equalsIgnoreCase(""))) {
-                            player.sendActionBar(MessageUtil.get("Teleport.Actionbar").replaceAll("%seconds%", String.valueOf(seconds[0])));
-                        }
-                        if (!(TryTpa.getInstance().getConfig().getString("Teleport.Title.Title").equalsIgnoreCase("")) || !(TryTpa.getInstance().getConfig().getString("Teleport.Title.SubTitle").equalsIgnoreCase(""))) {
-                            player.sendTitle(MessageUtil.get("Teleport.Title.Title").replaceAll("%seconds%", String.valueOf(seconds[0])), MessageUtil.get("Teleport.Title.SubTitle").replaceAll("%seconds%", String.valueOf(seconds[0])));
-                        }
-                        playSound(player, "Teleport.CoolDownSound");
-                    }
-                    case 0 -> {
-                        player.teleport(location);
-                        playSound(player, "Teleport.CoolDownSound");
-                        move.remove(player.getUniqueId());
-                        this.cancel();
-                    }
+                case 0 -> {
+                    currentPlayer.teleport(location);
+                    playSound(currentPlayer, "Teleport.TeleportSound");
+                    move.remove(uuid);
+                    task.cancel();
                 }
             }
-        }.runTaskTimer(TryTpa.getInstance(), 0, 20);
+        }, null, 0, 20);
     }
 
     private static void playSound(Player player, String key) {
@@ -86,5 +92,4 @@ public class TeleportUtil {
             } catch (Exception ignored) { }
         }
     }
-
 }
